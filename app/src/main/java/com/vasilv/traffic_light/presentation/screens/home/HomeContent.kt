@@ -10,14 +10,16 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.vasilv.traffic_light.R
 
 @Composable
 fun HomeContent(
     modifier: Modifier,
     homeState: HomeState,
     onCarModelChange: (String) -> Unit,
-    onStartDriving: () -> Unit
+    onStartDriving: (String) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -27,16 +29,16 @@ fun HomeContent(
         TextField(
             value = homeState.carModel,
             onValueChange = onCarModelChange,
-            placeholder = { Text(text = "Car model") }
+            placeholder = { Text(text = stringResource(R.string.home_content_car_model_placeholder)) }
         )
 
         Spacer(modifier = Modifier.size(8.dp))
 
         Button(
-            onClick = onStartDriving,
+            onClick = { onStartDriving(homeState.carModel) },
             enabled = homeState.isFormValid
         ) {
-            Text(text = "Start Driving")
+            Text(text = stringResource(R.string.home_content_start_driving_button))
         }
     }
 }

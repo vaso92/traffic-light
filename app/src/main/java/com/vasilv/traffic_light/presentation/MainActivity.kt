@@ -16,8 +16,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NamedNavArgument
+import androidx.navigation.NavHost
+import androidx.navigation.NavType.Companion.StringType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import androidx.navigation.toRoute
+import com.vasilv.traffic_light.presentation.screens.home.HomeRoute
 import com.vasilv.traffic_light.presentation.screens.home.HomeScreen
 import com.vasilv.traffic_light.presentation.screens.home.HomeViewModel
+import com.vasilv.traffic_light.presentation.screens.traffic_light.TrafficLightRoute
+import com.vasilv.traffic_light.presentation.screens.traffic_light.TrafficLightScreen
 import com.vasilv.traffic_light.presentation.ui.theme.TrafficlightTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,14 +38,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val navController = rememberNavController()
+
             TrafficlightTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .fillMaxSize()
+                    NavHost(
+                        modifier = Modifier.padding(innerPadding),
+                        navController = navController,
+                        startDestination = HomeRoute
                     ) {
-                        HomeScreen(homeViewModel = homeViewModel)
+                        composable<HomeRoute> {
+                            HomeScreen(homeViewModel = homeViewModel,
+                                navigateToTrafficLight = { carModel ->
+                                    navController.navigate(
+                                        TrafficLightRoute(carModel)
+                                    )
+                                })
+                        }
+
+                        composable<TrafficLightRoute> {
+                            val arguments = it.toRoute<TrafficLightRoute>()
+                            TrafficLightScreen(arguments)
+                        }
                     }
                 }
             }

@@ -18,10 +18,6 @@ class HomeViewModel : ViewModel() {
         _state.update { it.copy(carModel = value) }
     }
 
-    fun onStartDriving() {
-
-    }
-
     private fun validateForm(state: HomeState): Boolean {
         return state.carModel.length > 3
     }
