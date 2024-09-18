@@ -1,4 +1,4 @@
-package com.vasilv.traffic_light.ui.theme
+package com.vasilv.traffic_light.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
